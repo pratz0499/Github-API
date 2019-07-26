@@ -6,6 +6,7 @@ res=response.text
 parsed=json.loads(res)
 #print(json.dumps(parsed,indent=4,sort_keys=True))
 json_tree=objectpath.Tree(parsed)
-commit_time=tuple(json_tree.execute('$..date'))
+commit_time=tuple(json_tree.execute('$..author[date]'))
+#print(len(commit_time))
 for i in commit_time:
 	print(i)
