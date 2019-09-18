@@ -4,15 +4,28 @@ import objectpath
 
 
 class github:
+  def __init__(self):
+    self.name_list=[]
+    self.repo_list=[]
+  def get_user_and_repositry(self):
+    self.n=int(input("Enter the number of iterations: "))
+    for self.i in range(self.n):
+      self.name=str(input("Enter the Username: "))
+      self.repositry=str(input("Enter the Repositry Name: "))
+      self.name_list.append(self.name)
+      self.repo_list.append(self.repositry)
+    
   def get_urls(self):
     headers = {'Accept': 'application/vnd.github.preview'}
-
-    self.contributers= requests.get('http://api.github.com/repos/jreynolds01/RealtimeRDeployment/stats/contributors')
-    self.commit_activity=requests.get('http://api.github.com/repos/jreynolds01/RealtimeRDeployment/stats/commit_activity')
-    self.code_frequency=requests.get('http://api.github.com/repos/jreynolds01/RealtimeRDeployment/stats/code_frequency')
-    self.participation=requests.get('http://api.github.com/repos/jreynolds01/RealtimeRDeployment/stats/participation')
-    self.punch_card=requests.get('http://api.github.com/repos/jreynolds01/RealtimeRDeployment/stats/punch_card')
-    self.followers= requests.get('http://api.github.com/users/:jreynolds01/followers')
+    
+    for i,j in self.name_list and self.repo_list:
+      self.contributers= requests.get('http://api.github.com/repos/i/j/stats/contributors')
+      self.commit_activity=requests.get('http://api.github.com/repos/i/j/stats/commit_activity')
+      self.code_frequency=requests.get('http://api.github.com/repos/i/j/stats/code_frequency')
+      self.participation=requests.get('http://api.github.com/repos/i/j/stats/participation')
+      self.punch_card=requests.get('http://api.github.com/repos/i/j/stats/punch_card')
+      self.followers= requests.get('http://api.github.com/users/i/followers')
+    
     self.stars = requests.get('http://api.github.com/repos/jasonrudolph/keyboard', headers=headers)
     
     
@@ -53,7 +66,7 @@ class github:
    
 a=github()
 a.get_urls()
-a.view_json()
-a.parse()
-a.json_fy()
+#a.view_json()
+#a.parse()
+#a.json_fy()
   
