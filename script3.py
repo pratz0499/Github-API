@@ -8,35 +8,42 @@ class github:
     self.name_list=[]
     self.repo_list=[]
   def get_user_and_repositry(self):
-    self.n=int(input("Enter the number of iterations: "))
-    for self.i in range(self.n):
+    
       self.name=str(input("Enter the Username: "))
-      self.repositry=str(input("Enter the Repositry Name: "))
       self.name_list.append(self.name)
+
+      self.repositry=str(input("Enter the Repositry Name: "))
       self.repo_list.append(self.repositry)
     
   def get_urls(self):
     headers = {'Accept': 'application/vnd.github.preview'}
     
-    for i,j in self.name_list and self.repo_list:
-      self.contributers= requests.get('http://api.github.com/repos/i/j/stats/contributors')
-      self.commit_activity=requests.get('http://api.github.com/repos/i/j/stats/commit_activity')
-      self.code_frequency=requests.get('http://api.github.com/repos/i/j/stats/code_frequency')
-      self.participation=requests.get('http://api.github.com/repos/i/j/stats/participation')
-      self.punch_card=requests.get('http://api.github.com/repos/i/j/stats/punch_card')
-      self.followers= requests.get('http://api.github.com/users/i/followers')
+    for i in self.name_list:
+      for j in self.repo_list:
+        self.contributers= requests.get('http://api.github.com/repos/i/j/stats/contributors')
+        self.commit_activity=requests.get('http://api.github.com/repos/i/j/stats/commit_activity')
+        self.code_frequency=requests.get('http://api.github.com/repos/i/j/stats/code_frequency')
+        self.participation=requests.get('http://api.github.com/repos/i/j/stats/participation')
+        self.punch_card=requests.get('http://api.github.com/repos/i/j/stats/punch_card')
+        self.followers= requests.get('http://api.github.com/users/i/followers')
     
     self.stars = requests.get('http://api.github.com/repos/jasonrudolph/keyboard', headers=headers)
     
     
   def view_json(self):
-    #getting_json_output
+    #getting_json_output of contributers
     self.res_contributers=contributers.text
+    #getting_json_output of commit activites
     self.res_commit_activity=commit_activity.text
+    #getting_json_output of code_frequency
     self.res_frequency=code_frequency.text
+    #getting_json_output of participation
     self.res_participation=participation.text
+    #getting_json_output of punch_cards
     self.res_punchcard=punch_card.text
+    #getting_json_output of followers
     self.res_followers=followers.text
+    #getting_json_output of stars
     self.res_stars=stars.text
     
 
@@ -65,8 +72,9 @@ class github:
     print(self.parsed_stars)
    
 a=github()
+a.get_user_and_repositry()
 a.get_urls()
-#a.view_json()
-#a.parse()
-#a.json_fy()
+a.view_json()
+a.parse()
+a.json_fy()
   
