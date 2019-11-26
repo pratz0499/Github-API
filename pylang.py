@@ -1,107 +1,100 @@
 import numpy as np
 import pandas as pd
-import scipy
-from io import StringIO
-import seaborn as sns
 import matplotlib.pyplot as plt
+import seaborn as sns
+sns.set()
+
+
+df=pd.read_csv(r"D:\Organised\Projects\Minor Project\python_projects\github data\githubData\merge.csv",encoding = "ISO-8859-1",dtype={'Language': str},low_memory=False)
+#Language plot
+lang=df['Language'].str.strip().value_counts()
+total_lang=lang.sum()
+percent_lang=lang.apply(lambda x: 100*(x/total_lang))
+
+lang1 = pd.DataFrame({'Language':percent_lang.head(10).keys().tolist(),'percent':percent_lang.head(10).values.tolist()})
+lang1["Language"] = lang1["Language"].str.strip()
+bar1=lang1.head(10).plot(x="Language",y="percent",kind='bar')
+#forks plot
+clean_forks=df[pd.to_numeric(df['Forks'], errors='coerce').notnull()]
+aggregated = clean_forks.groupby('Language').agg({'Forks':'count'}).reset_index()
+sum_ag = aggregated["Forks"].sum()
+aggregated["new"]=aggregated["Forks"].apply(lambda x: 100*(x/sum_ag))
+plot_data={'Language':aggregated['Language'],
+      'Fork': aggregated['new']}
+plot_data=pd.DataFrame(plot_data)
+plot_data = plot_data.sort_values("Fork")
+
+plot_data["Language"] = plot_data["Language"].str.strip()
+
+s1 = pd.merge(lang1,plot_data.drop_duplicates(subset="Language",keep="first"),how="inner",on=["Language"])
+bar2=s1.tail(10).plot(x="Language",y="Fork", kind='bar')
+
+#stars plot
+clean_stars=df[pd.to_numeric(df['Stars_count'], errors='coerce').notnull()]
+aggregated_stars=clean_stars.groupby('Language').agg({'Stars_count':'count'}).reset_index()
+sum_ags=aggregated_stars["Stars_count"].sum()
+aggregated_stars["new"]=aggregated_stars["Stars_count"].apply(lambda x: 100*(x/sum_ags))
+plot_data1={'Language':aggregated_stars['Language'],
+      'Stars_count': aggregated_stars['new']}
+plot_data1=pd.DataFrame(plot_data1)
+plot_data1 = plot_data1.sort_values("Stars_count")
+
+plot_data1["Language"] = plot_data1["Language"].str.strip()
+
+s1 = pd.merge(s1,plot_data1.drop_duplicates(subset="Language",keep="first"),how="inner",on=["Language"])
+bar3=s1.tail(10).plot(x="Language",y="Stars_count", kind='bar')
+
+#watchers plot
+clean_watchers=df[pd.to_numeric(df['watchers'], errors='coerce').notnull()]
+aggregated_watchers=clean_watchers.groupby('Language').agg({'watchers':'count'}).reset_index()
+sum_agw=aggregated_watchers["watchers"].sum()
+aggregated_watchers["new"]=aggregated_watchers["watchers"].apply(lambda x: 100*(x/sum_agw))
+plot_data2={'Language':aggregated_watchers['Language'],
+      'watchers': aggregated_watchers['new']}
+plot_data2=pd.DataFrame(plot_data2)
+plot_data2 = plot_data2.sort_values("watchers")
+
+
+plot_data2["Language"] = plot_data2["Language"].str.strip()
+s1 = pd.merge(s1,plot_data2.drop_duplicates(subset="Language",keep="first"),how="inner",on=["Language"])
+bar4=s1.tail(10).plot(x="Language",y="watchers", kind='bar')
+
+#downloads plot
+clean_downloads=df[pd.to_numeric(df['downloads'], errors='coerce').notnull()]
+aggregated_downloads=clean_downloads.groupby('Language').agg({'downloads':'count'}).reset_index()
+sum_agd=aggregated_downloads["downloads"].sum()
+aggregated_downloads["new"]=aggregated_downloads["downloads"].apply(lambda x: 100*(x/sum_agd))
+plot_data3={'Language':aggregated_downloads['Language'],
+      'downloads': aggregated_downloads['new']}
+plot_data3=pd.DataFrame(plot_data3)
+plot_data3 = plot_data3.sort_values("downloads")
+
+
+plot_data3["Language"] = plot_data3["Language"].str.strip()
+s1 = pd.merge(s1,plot_data3.drop_duplicates(subset="Language",keep="first"),how="inner",on=["Language"])
+bar5=s1.tail(10).plot(x="Language",y="downloads", kind='bar')
+langs = s1["Language"].values.tolist()
+s2 = s1.drop(["Language"],axis=1)
 from sklearn.preprocessing import MinMaxScaler
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
-from sklearn.pipeline import Pipeline
-from sklearn.impute import SimpleImputer
-from sklearn.compose import ColumnTransformer
-
-class github:
-    def data(self):
-        self.df=pd.read_csv(r"D:\Organised\Projects\Minor Project\python_projects\github data\githubData\merge.csv",encoding = "ISO-8859-1",dtype={'Language': str},low_memory=False)
-    
-    def transformer(self):
-        self.categorical_features = ['Forks','Stars_count','watchers','downloads']
-        self.categorical_transformer = Pipeline(steps=[
-    ('imputer', SimpleImputer(strategy='most_frequent', fill_value=None)),
-    ('onehot', OneHotEncoder(handle_unknown='ignore'))])
-
-    def language(self):
-        self.lang=self.df['Language'].str.strip().value_counts()
-        self.total_lang=self.lang.sum()
-        self.percent_lang=self.lang.apply(lambda x: 100*(x/self.total_lang))
-    
-    def forks(self):
-        self.clean_forks=self.df[pd.to_numeric(self.df['Forks'], errors='coerce').notnull()]
-        self.aggregated =self.clean_forks.groupby('Language').agg({'Forks':'count'}).reset_index()
-        self.sum_ag =self.aggregated["Forks"].sum()
-        self.aggregated["new"]=self.aggregated["Forks"].apply(lambda x: 100*(x/self.sum_ag))
-
-    def stars(self):
-        self.clean_stars=self.df[pd.to_numeric(self.df['Stars_count'], errors='coerce').notnull()]
-        self.aggregated_stars=self.clean_stars.groupby('Language').agg({'Stars_count':'count'}).reset_index()
-        self.sum_ags=self.aggregated_stars["Stars_count"].sum()
-        self.aggregated_stars["new"]=self.aggregated_stars["Stars_count"].apply(lambda x: 100*(x/self.sum_ags))
-
-    def watchers(self):
-        self.clean_watchers=self.df[pd.to_numeric(self.df['watchers'], errors='coerce').notnull()]
-        self.aggregated_watchers=self.clean_watchers.groupby('Language').agg({'watchers':'count'}).reset_index()
-        self.sum_agw=self.aggregated_watchers["watchers"].sum()
-        self.aggregated_watchers["new"]=self.aggregated_watchers["watchers"].apply(lambda x: 100*(x/self.sum_agw))
-
-    def downloads(self):
-        self.clean_downloads=self.df[pd.to_numeric(self.df['downloads'], errors='coerce').notnull()]
-        self.aggregated_downloads=self.clean_downloads.groupby('Language').agg({'downloads':'count'}).reset_index()
-        self.sum_agd=self.aggregated_downloads["downloads"].sum()
-        self.aggregated_downloads["new"]=self.aggregated_downloads["downloads"].apply(lambda x: 100*(x/self.sum_agd))
-
-    def plot(self):
-        #language plot
-        self.bar1=self.percent_lang.head(20).plot(x="Languages",y="percent_lang",kind='bar')
-        plt.show()
-        plt.close()
-
-        #forks plot
-        self.plot_data={'Languages':self.aggregated['Language'],
-      'Fork': self.aggregated['new']}
-        self.plot_data=pd.DataFrame(self.plot_data)
-        self.plot_data =self.plot_data.sort_values("Fork")
-        self.bar2=self.plot_data.tail(20).plot(x="Languages",y="Fork", kind='bar')
-        plt.show()
-        plt.close()
-
-        #Stars plot
-        self.plot_data1={'Languages':self.aggregated_stars['Language'],
-      'Stars_count':self.aggregated_stars['new']}
-        self.plot_data1=pd.DataFrame(self.plot_data1)
-        self.plot_data1 =self.plot_data1.sort_values("Stars_count")
-        self.bar3=self.plot_data1.tail(20).plot(x="Languages",y="Stars_count", kind='bar')
-        plt.show()
-        plt.close()
-
-        #watchers plot
-        self.plot_data2={'Languages':self.aggregated_watchers['Language'],
-      'watchers':self.aggregated_watchers['new']}
-        self.plot_data2=pd.DataFrame(self.plot_data2)
-        self.plot_data2 =self.plot_data2.sort_values("watchers")
-
-        self.bar4=self.plot_data2.tail(20).plot(x="Languages",y="watchers", kind='bar')
-        plt.show()
-        plt.close()
-
-        #downloads plot
-        self.plot_data3={'Languages':self.aggregated_downloads['Language'],
-      'downloads':self.aggregated_downloads['new']}
-        self.plot_data3=pd.DataFrame(self.plot_data3)
-        self.plot_data3 =self.plot_data3.sort_values("downloads")
-        self.bar5=self.plot_data3.tail(20).plot(x="Languages",y="downloads", kind='bar')
-        plt.show()
-        plt.close()
-
-    
-
-
-
-a=github()
-a.data()
-a.transformer()
-a.language()
-a.forks()
-a.stars()
-a.watchers()
-a.downloads()
-a.plot()
+scaler = MinMaxScaler()
+s1_scaled = pd.DataFrame(scaler.fit_transform(s2),columns=s2.columns)
+N = len(langs)
+ind = np.arange(N)
+perce = s1_scaled["percent"].values.tolist()
+forke = s1_scaled["Fork"].values.tolist()
+stars = s1_scaled["Stars_count"].values.tolist()
+watchers = s1_scaled["watchers"].values.tolist()
+downs = s1_scaled["downloads"].values.tolist()
+width = 0.2
+fig = plt.figure()
+ax = fig.add_subplot(111)
+ax.bar(ind-(width),perce,width,color='r',label="Percent",align="center")
+ax.bar(ind,forke,width,color='b',label="Fork",align="center")
+# ax.bar(ind,perce,stars,color='g',label="Stars_count",align="center")
+ax.bar(ind+width,watchers,width,color='y',label="Watchers",align="center")
+ax.bar(ind+(2*width),downs,width,color='b',label="downloads",align="center")
+ax.set_xticks(ind+width)
+ax.set_xticklabels(langs)
+ax.autoscale(tight=True)
+ax.legend()
+plt.show()
