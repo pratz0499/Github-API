@@ -1,7 +1,14 @@
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
+import scipy
+from io import StringIO
 import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.pipeline import Pipeline
+from sklearn.impute import SimpleImputer
+from sklearn.compose import ColumnTransformer
 sns.set()
 
 
