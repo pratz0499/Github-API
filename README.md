@@ -1,2 +1,2 @@
 # Github-API
-Python script to automate commit date &amp; time fetching using REST API.
+Python script to extract GitHub attributes using REST API
