@@ -12,7 +12,7 @@ pip install seaborn
 pip install scikit-learn
 ```
 ## Step 1:
-Change the repository name from flutter to the desired repository name to extract the data in data_collection.py.
+Change the repository name from flutter to the desired repository name to extract the data in data_collection.py and run the program.
 ```bash
 requests.get(f'https://api.github.com/users/flutter/repos?page={i}&per_page=100',params=params, auth=('pratz0499', api_access_token))
 ```
@@ -20,7 +20,7 @@ You can automate this process by setting a cron job. Note that We can authentica
 If Extracting more than 1 repository, then all the stored csv files need to be merged into single csv file.
 
 ## Step 2:
-Change the path, where the merged csv file is stored in pylang.py.
+Change the path, where the merged csv file is stored in pylang.py and run the program.
 ```bash
 df=pd.read_csv(r"D:\Organised\Projects\Minor Project\python_projects\github data\githubData\merge.csv",encoding = "ISO-8859-1",dtype={'Language': str},low_memory=False)
 ```
