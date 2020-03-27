@@ -11,3 +11,8 @@ pip install matplotlib
 pip install seaborn
 pip install scikit-learn
 ```
+## Step 1:
+Change the repository name from flutter to the desired repository name to extract the data. 
+```bash
+requests.get(f'https://api.github.com/users/flutter/repos?page={i}&per_page=100',params=params, auth=('pratz0499', api_access_token))
+```
