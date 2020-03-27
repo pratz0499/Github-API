@@ -21,5 +21,6 @@ If Extracting more than 1 repository, then all the stored csv files need to be m
 
 ## Step 2:
 Change the path, where the merged csv file is stored.
+```bash
 df=pd.read_csv(r"D:\Organised\Projects\Minor Project\python_projects\github data\githubData\merge.csv",encoding = "ISO-8859-1",dtype={'Language': str},low_memory=False)
-
+```
