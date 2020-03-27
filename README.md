@@ -5,8 +5,8 @@ There are various Programming Language Popularity Indexes, among which PYPL and 
 
 ## Installation
 ```bash
-pip install Pandas
-pip install Numpy
+pip install pandas
+pip install numpy
 pip install matplotlib
 pip install seaborn
 pip install scikit-learn
